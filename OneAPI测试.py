@@ -1,21 +1,26 @@
 import json
-
+import os
 import requests
 
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
 # One-API 地址
-ONEAPI_URL = "http://212.64.10.189:3200/v1/chat/completions"
-# ONEAPI_URL = "https://api.siliconflow.cn/v1/chat/completions"
+ONEAPI_URL = os.getenv("ONE_API_BASE_URL")
+print(str(ONEAPI_URL))
 
 # 如果需要 API Key，可以放在 headers 中
 HEADERS = {
     "Content-Type": "application/json",
-    "Authorization": "Bearer sk-qd6XizNDDKOHcL7c83F0Ad69B0D54a9dAeB5Cb9aB9240654-3",  # 如果 One-API 配置了密钥
-    # "Authorization": "Bearer sk-mrubplwnqalsbcryneaiozounoiainmxeilqajjppcycwtro",  # 硅基流动
+    "Authorization": "Bearer " + os.getenv("ONE_API_KEY"),  # 如果 One-API 配置了密钥
 }
+
+print(str(HEADERS))
 
 # 构造请求体
 data = {
-    "model": "Qwen/Qwen3-30B-A3B-Thinking-2507",  # 根据你 One-API 部署支持的模型修改
+    "model": os.getenv("ONE_API_MODEL"),  # 根据你 One-API 部署支持的模型修改
     "messages": [
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "你好，分析当前模型哪家供应商最强"},
